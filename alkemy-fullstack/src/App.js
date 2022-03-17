@@ -1,39 +1,33 @@
 import Button from "./components/Button";
 import Header from "./components/Header";
 import Tasks from "./components/Tasks";
+import AddTransaction from "./components/AddTransaction";
 import './index.css';
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
+import axios from 'axios'
 
 
 function App() {
-  const [tasks,setTasks] = useState ([
-    {
-      id:1,
-      concept:'Supermarket' ,
-      amount: 200 ,
-      type: false ,
-      date: '20/1/2022',
-      category:'Food' ,
-  },
-  {
-      id:2,
-      concept:'Medic' ,
-      amount: 350 ,
-      type:false ,
-      date:'24/1/2022',
-      category:'Health' ,
-  },
-  {
-      id:3,
-      concept:'Salary' ,
-      amount:20000,
-      type:true,
-      date: '1/2/2022' ,
-      category: 'Income' , 
-  }
-  ]
 
-  )
+  const [showAddTranscation, setShowAddTranscation] = useState (false)
+  
+
+  const [tasks,setTasks] = useState ([])
+  
+    useEffect(()=>{
+      const getTransactions= async ()=>{
+        const resp = await axios.get('http://localhost:3000/transactions')
+        setTasks(resp.data)
+      }    
+      getTransactions()
+    },[])
+    
+    const  addTransaction = (task) =>{
+      console.log(task)
+      const id = Math.floor(Math.random()*1000)+1
+  const newTransaction = {id,...task}
+  setTasks ([...tasks,newTransaction])
+}
 
   const deleteTask = (id) => {
     setTasks(tasks.filter((task)=> task.id !== id))
@@ -46,8 +40,8 @@ function App() {
   return (
     
     <div className="container">
-     <Header />
-     <Button></Button>
+     <Header  onAdd={()=> setShowAddTranscation(!showAddTranscation)}/>
+     {showAddTranscation && <AddTransaction onAdd={addTransaction} />}
      {tasks.length>0 ?( 
      <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleType} />):('No task to show')}
     </div>
