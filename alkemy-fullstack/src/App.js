@@ -10,27 +10,48 @@ import axios from 'axios'
 function App() {
 
   const [showAddTranscation, setShowAddTranscation] = useState (false)
-  
+  const [totalBalance,setTotalBalance] = useState(0)
+
+  const [filter,setFilter] = useState (false)
 
   const [tasks,setTasks] = useState ([])
   
-    useEffect(()=>{
+    useEffect(()=>{   
+     
       const getTransactions= async ()=>{
-        const resp = await axios.get('http://localhost:3000/transactions')
+        const resp = await axios.get('http://localhost:3000/api/v1/transactions')
+        console.log(resp)
         setTasks(resp.data)
+        
       }    
       getTransactions()
-    },[])
-    
-    const  addTransaction = (task) =>{
-      console.log(task)
-      const id = Math.floor(Math.random()*1000)+1
-  const newTransaction = {id,...task}
-  setTasks ([...tasks,newTransaction])
-}
+    },[filter])
 
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((task)=> task.id !== id))
+    useEffect(()=>{
+
+      let total= 0
+      tasks.forEach((task)=>{ total += task.amount * (task.type?1:-1)}) 
+      setTotalBalance(total)
+
+    },[tasks]
+
+    )
+    
+
+
+    const  addTransaction = async (task) =>{
+      const resp = await axios.post('http://localhost:3000/api/v1/transactions',task)
+      console.log(resp)
+      if(resp.status === 200){
+        setTasks ([...tasks,resp.data])
+      }
+    }
+
+  const deleteTask = async (id) => {
+    const resp = await axios.delete(`http://localhost:3000/api/v1/transactions/${id}`)
+    if(resp.status === 200){
+      setTasks(tasks.filter((task)=> task.id !== id))
+    }
   }
 
   const toggleType = (id) => {
@@ -40,10 +61,10 @@ function App() {
   return (
     
     <div className="container">
-     <Header  onAdd={()=> setShowAddTranscation(!showAddTranscation)}/>
+     <Header totalBalance={totalBalance} filter={filter} setFilter={setFilter} onAdd={()=> setShowAddTranscation(!showAddTranscation)}/>
      {showAddTranscation && <AddTransaction onAdd={addTransaction} />}
      {tasks.length>0 ?( 
-     <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleType} />):('No task to show')}
+     <Tasks tasks={filter? tasks.slice(0,10):tasks} onDelete={deleteTask} onToggle={toggleType} />):('No task to show')}
     </div>
   );
 }

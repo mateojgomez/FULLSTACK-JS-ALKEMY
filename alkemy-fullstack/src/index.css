@@ -45,6 +45,11 @@ body {
   outline: none;
 }
 
+.totalBalance {
+  align-items: center;
+
+}
+
 .btn:active {
   transform: scale(0.98);
 }

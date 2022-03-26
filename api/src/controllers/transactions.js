@@ -1,46 +1,69 @@
 const express = require('express');
-
-const transactionsSaved = [
-    {id:1,
-        concept:'Medic',
-        amount:200,
-        type:false,
-        description:'Health'},  
-    {id:2,
-        concept:'Salary',
-        amount:2000,
-        type:true,
-        description:'Income'
-    },  
-    {id:3,
-        concept:'Cinema',
-        amount:500,
-        type:false,
-        description:'Leisure'
-    },
-];
-
+const {sequelize} = require('../loaders/database/conection')
 /**
  * 
  * @param {express.Request} req 
  * @param {express.Response} res 
  */
 
-const getAllTransactions = (req,res) =>{
-    const transactions = transactionsSaved;
+
+const getAllTransactions = async (req,res) =>{
+    const transactions =  await sequelize.models.transactions.findAll();
     res.json(transactions);
 }
 
+const getTransaction = async (req,res) =>{
+  const transaction =  await sequelize.models.transactions.findByPk(req.params.id);
+  res.json(transaction)
+}
+
+const deleteTransaction = async (req,res) => { 
+    const resp = await sequelize.models.transactions.destroy(
+        {
+            where: {
+              id: req.params.id
+            }
+          }
+        )
+    res.json(resp)
+    
+ }
+
+
+
+const updateTransaction = async (req,res) => { 
+  console.log(req.params)
+  console.log(req.body)
+ const  transactionBody = req.body
+  const resp = await sequelize.models.transactions.update(
+      {
+        concept:transactionBody.concept,
+        amount:transactionBody.amount,
+        category:transactionBody.category,
+        date:transactionBody.date,
+    }, {
+        where: {
+          id: req.params.id
+        }
+      })
+      res.json(resp);
+    }
+
+
+ 
+const createTransaction = async (req,res) => { 
+    console.log(req.body)
+    const resp = await sequelize.models.transactions.create(req.body)
+    res.json(resp);
+
+ }
+
 /**
  * 
  * @param {express.Request} req 
  * @param {express.Response} res 
  */
 
-const putOneTransaction = (req,res) => {
-console.log(req.body);
-transactionsSaved.push(req.body);
-res.json(req.body).status(201);
-}
 
-module.exports = {getAllTransactions, putOneTransaction}
+
+module.exports = {getAllTransactions, createTransaction,deleteTransaction,updateTransaction,getTransaction}
