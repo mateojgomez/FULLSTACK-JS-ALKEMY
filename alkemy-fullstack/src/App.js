@@ -19,12 +19,16 @@ function App() {
     const [showAddTranscation, setShowAddTranscation] = useState(false)
 
     const [filter, setFilter] = useState(false)
-    const transactions = useSelector((state) => state.projectData.transactions)
+    const transactions = useSelector((state) => {
+        return state.projectData.transactions
+    })
 
     useEffect(() => {
         const getTransactions = async () => {
             const resp = await axios.get('/transactions')
-            dispatch(setTransactions({ transactions: resp.data }))
+            dispatch(
+                setTransactions({ transactions: resp.data ? resp.data : [] })
+            )
         }
         getTransactions()
     }, [filter, transactions.length])

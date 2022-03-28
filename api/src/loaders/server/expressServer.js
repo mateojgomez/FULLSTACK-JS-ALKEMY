@@ -77,7 +77,6 @@ class ExpressServer {
 
 		this.app.use(
 			this.basePath,
-			// authenticateToken,
 			require('../../routes/transactions')
 		);
 		this.app.use(

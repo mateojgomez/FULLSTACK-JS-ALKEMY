@@ -2,7 +2,6 @@
   "name": "alkemy-fullstack",
   "version": "0.1.0",
   "private": true,
-
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@mui/icons-material": "^5.5.1",
@@ -49,5 +48,4 @@
       "last 1 safari version"
     ]
   }
-
 }

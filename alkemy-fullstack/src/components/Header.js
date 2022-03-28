@@ -5,7 +5,7 @@ import './Button'
 import Button from './Button'
 
 const Header = ({ onAdd, filter, setFilter }) => {
-    const totalBalance = useSelector((state) => state.projectData.totalBalance)
+    const totalBalance = useSelector((state) => state.projectData.balance)
     return (
         <header>
             <Row className="header">

@@ -6,14 +6,34 @@ const {
 	updateTransaction,
 	getTransaction,
 } = require('../controllers/transactions');
+const authenticateToken = require('../middlewares');
 
 const router = Router();
 
-router.get('/');
-router.get('/', getAllTransactions);
-router.get('/:id', getTransaction);
-router.post('', createTransaction);
-router.delete('/:id', deleteTransaction);
-router.patch('/:id', updateTransaction);
+router.get(
+	'/transactions',
+	authenticateToken,
+	getAllTransactions
+);
+router.get(
+	'/transactions/:id',
+	authenticateToken,
+	getTransaction
+);
+router.post(
+	'/transactions',
+	authenticateToken,
+	createTransaction
+);
+router.delete(
+	'/transactions/:id',
+	authenticateToken,
+	deleteTransaction
+);
+router.patch(
+	'/transactions/:id',
+	authenticateToken,
+	updateTransaction
+);
 
 module.exports = router;

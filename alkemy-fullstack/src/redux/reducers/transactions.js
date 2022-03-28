@@ -24,10 +24,6 @@ const projectData = createSlice({
         },
         setToken: (state, action) => {
             state.token = action.payload.token
-            sessionStorage.setItem(
-                'token',
-                JSON.stringify(action.payload.token)
-            )
         },
     },
 })
