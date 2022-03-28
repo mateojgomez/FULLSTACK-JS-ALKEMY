@@ -35,10 +35,10 @@ export const Login = () => {
     }
     return (
         <>
-            <Form onSubmit={formik.handleSubmit}>
-                Login
-                <Container>
-                    <Row>
+            <Container className="login-title login-form">
+                <Form onSubmit={formik.handleSubmit} className="form-box">
+                    <h1 className="login-title">Alkemy Balance Tracker</h1>
+                    <Row className="mt-5">
                         <Col xs={12} md={4}>
                             <label htmlFor="Username">Username</label>
                         </Col>
@@ -54,9 +54,9 @@ export const Login = () => {
                         </Col>
                     </Row>
 
-                    <Row>
+                    <Row className="mt-2">
                         <Col xs={12} md={4}>
-                            <label htmlFor="Password">Passowrd</label>
+                            <label htmlFor="Password">Password</label>
                         </Col>
                         <Col xs={12} md={8}>
                             <Form.Input
@@ -69,9 +69,15 @@ export const Login = () => {
                             />
                         </Col>
                     </Row>
-                </Container>
-                <Button type="submit"> Send</Button>
-            </Form>
+                    <Row className="button-box mt-5">
+                        <Col md={3}>
+                            <Button className="button-login" type="submit">
+                                Log In
+                            </Button>
+                        </Col>
+                    </Row>
+                </Form>
+            </Container>
         </>
     )
 }

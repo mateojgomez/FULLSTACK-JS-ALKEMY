@@ -15,6 +15,8 @@ import {
 } from './redux/reducers/transactions'
 
 function App() {
+    axios.defaults.headers.common['Authorization'] =
+        localStorage.getItem('token')
     const dispatch = useDispatch()
     const [showAddTranscation, setShowAddTranscation] = useState(false)
 
@@ -31,7 +33,7 @@ function App() {
             )
         }
         getTransactions()
-    }, [filter, transactions.length])
+    }, [])
 
     useEffect(() => {
         let total = 0

@@ -5,36 +5,34 @@ import { Form, Button } from 'semantic-ui-react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { notification } from 'antd'
+import { useDispatch } from 'react-redux'
+import { updateTransaction } from '../redux/reducers/transactions'
 
-export const ModalEditTransaction = ({ show, setModalShow, id, task }) => {
-    const [tempTask, setTempTask] = useState({})
+export const ModalEditTransaction = ({
+    show,
+    setModalShow,
+    id,
+    transaction,
+}) => {
+    const dispatch = useDispatch()
 
-    useEffect(() => {
-        const getTheTransaction = async () => {
-            const resp = await axios.get(`/transactions/${id}`)
-            setTempTask(resp.data)
-        }
-        if (show) {
-            getTheTransaction()
-        }
-    }, [show])
-    const updateTransaction = async (formData) => {
+    const setTransaction = async (formData) => {
         try {
             const resp = await axios.patch(`/transactions/${id}`, formData)
             openNotification('success', 'Transaction updated successfully')
+            dispatch(updateTransaction({ item: { ...formData, id: id } }))
             setModalShow(false)
             return resp
         } catch (err) {
             openNotification('error', 'Transaction updated error')
-            console.log(err)
         }
     }
     const formik = useFormik({
         initialValues: {
-            concept: task?.concept,
-            category: task?.category,
-            amount: task?.amount,
-            date: task?.date.slice(0, 10),
+            concept: transaction?.concept,
+            category: transaction?.category,
+            amount: transaction?.amount,
+            date: transaction?.date.slice(0, 10),
         },
         validationSchema: Yup.object({
             concept: Yup.string().required('concept is required'),
@@ -46,7 +44,7 @@ export const ModalEditTransaction = ({ show, setModalShow, id, task }) => {
             date: Yup.date().required('date is required'),
         }),
         onSubmit: (formData) => {
-            updateTransaction(formData)
+            setTransaction(formData)
         },
     })
     const openNotification = (type, message) => {

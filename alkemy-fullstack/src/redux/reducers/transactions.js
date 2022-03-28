@@ -13,6 +13,17 @@ const projectData = createSlice({
         insertTransaction: (state, action) => {
             state.transactions.push(action.payload.transaction)
         },
+        updateTransaction: (state, action) => {
+            state.transactions.map((transaction) => {
+                if (transaction.id === action.payload.item.id) {
+                    transaction.concept = action.payload.item.concept
+                    transaction.amount = action.payload.item.amount
+                    transaction.category = action.payload.item.category
+                    transaction.date = action.payload.item.date
+                    console.log(transaction)
+                }
+            })
+        },
         dropTransaction: (state, action) => {
             console.log(state.transactions.includes(action.payload.transaction))
             state.transactions = state.transactions.filter((value) => {
@@ -33,5 +44,6 @@ export const {
     insertTransaction,
     setTotalBalance,
     setToken,
+    updateTransaction,
 } = projectData.actions
 export default projectData.reducer

@@ -36,13 +36,24 @@ input[type='submit'] {
 input[type='submit']:hover {
     background: #6cf0c2;
 }
-
+.send-button {
+    background-color: #6cf0c2;
+    display: flex;
+    justify-content: center;
+}
+.button-login {
+    background-color: green !important;
+    color: #fff !important;
+}
 .button-container {
     display: flex;
     justify-content: center;
 }
-
+.form-box {
+    margin: auto;
+}
 .login-form {
+    width: 30% !important;
     background-color: white;
     padding: 2rem;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -50,6 +61,13 @@ input[type='submit']:hover {
 
 .list-container {
     display: flex;
+}
+.button-box {
+    display: flex;
+    justify-content: right;
+}
+.login-title {
+    text-align: center;
 }
 
 .error {
@@ -121,10 +139,18 @@ body {
 }
 
 .task {
+    display: flex;
+    justify-content: space-between;
     background: #f4f4f4;
     margin: 5px;
     padding: 10px 20px;
     cursor: pointer;
+    height: 100px;
+}
+.buttons-box {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
 }
 
 .task.reminder {

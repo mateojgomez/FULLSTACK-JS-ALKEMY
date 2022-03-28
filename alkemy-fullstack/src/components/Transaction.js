@@ -8,8 +8,11 @@ const Transaction = ({ transaction, onDelete }) => {
     return (
         //no necesito el onDoueble Click de abajo
         <div className={`task ${transaction.type ? 'reminder' : 'reminderr'}`}>
-            <h3>
-                {transaction.concept}
+            <div>
+                <h2>{transaction.concept}</h2>
+                <h3>${transaction.amount}</h3>
+            </div>
+            <div className="buttons-box">
                 <img
                     src={removeIcon}
                     style={{
@@ -30,13 +33,12 @@ const Transaction = ({ transaction, onDelete }) => {
                     }}
                     onClick={() => setModalShow(true)}
                 />
-            </h3>
-            <p>{transaction.amount}</p>
+            </div>
             <ModalEditTransaction
                 show={modalShow}
                 setModalShow={setModalShow}
                 id={transaction.id}
-                Transaction={transaction}
+                transaction={transaction}
             />
         </div>
     )
